@@ -1,3 +1,6 @@
+# Temp file
+.DS_store
+
 # Logs
 logs
 *.log
