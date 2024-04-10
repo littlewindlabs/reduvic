@@ -9,13 +9,14 @@
     let shouldProcessImgs = false;
 
     mutations.forEach(function(mutation) {
-      if (mutation.type === 'childList') {
+      if (mutation.type === 'childList' || mutation.type === 'attributes') {
         shouldProcessImgs = true;
       }
     });
 
     if (shouldProcessImgs) { 
       processImgs()
+      processVideos()
       console.log("relevant DOM update")
     }
   });
@@ -71,28 +72,21 @@
       }
     }
   }
-    // const matches = document.querySelectorAll("style*=background-image") //todo this selector doesn't work
-    // for (const match of matches) {
-    //   console.log("found element with background image")
-    //   if (!match.classList.contains('skipRedact') && !match.classList.contains('redactive') ){
-    //     match.classList.add("redactive")
-    //   }
-    // }
-    
-    // const property = "background-image"
-    // let walker = document.createTreeWalker(
-    //   document.documentElement,
-    //   NodeFilter.SHOW_ELEMENT, 
-    //   node => {
-    //     const el = node as Element
-    //     const bgImgProp = getComputedStyle(el).getPropertyValue("background-image").trim()
-    //     return (bgImgProp && bgImgProp != "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
-    //   }
-    // )
-    // while ( walker.nextNode() ) {
-    //   const el = walker.currentNode as Element
-    //   if (!el.classList.contains('skipRedact') && !el.classList.contains('redactive') ){
-    //     el.classList.add("redactive")
-    //   }
-    // }
+
+  function processVideos () { 
+    console.log("Processing videos")
+    const videos = document.getElementsByTagName("video")
+    for (const video of videos) {
+      if (!video.classList.contains('skipRedact') && !video.classList.contains('redactive') ){
+        // let parent = video.parentNode;
+        // let wrapper = document.createElement('div');
+        // wrapper.classList.add('redactive')
+        // if (parent){
+        //   parent.replaceChild(wrapper, video)
+        //   wrapper.appendChild(video)
+        // }
+        video.classList.add('redactive')
+      }
+    }
+  }
 </script>
