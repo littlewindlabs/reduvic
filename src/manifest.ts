@@ -16,7 +16,9 @@ const manifest = {
   content_scripts: [
     {
       js: ["src/entries/contentScript/primary/main.ts"],
+      css: ["src/assets/contentScript.css"],
       matches: ["*://*/*"],
+      run_at: "document_end",
     },
   ],
   host_permissions: ["*://*/*"],
