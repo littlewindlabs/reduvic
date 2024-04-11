@@ -1,22 +1,22 @@
 <script lang="ts">
-    import { walk } from "svelte/compiler";
 
   console.log("Content script is now active")
 
   processImgs()
   
   var mutationObserver = new MutationObserver(function(mutations) {
-    let shouldProcessImgs = false;
+    let shouldProcess = false;
 
     mutations.forEach(function(mutation) {
-      if (mutation.type === 'childList') {
-        shouldProcessImgs = true;
+      if (mutation.type === 'childList' || mutation.type === 'attributes') {
+        shouldProcess = true;
       }
     });
 
-    if (shouldProcessImgs) { 
+    if (shouldProcess) { 
       processImgs()
-      console.log("relevant DOM update")
+      processVideos()
+      console.log("observed DOM update")
     }
   });
 
@@ -28,18 +28,6 @@
     attributeOldValue: true,
     characterDataOldValue: true
   });
-
-  // document.addEventListener("readystatechange", (event) => {
-  //   console.log("ready state changed" + event)
-  //   processImgs()
-  // })
-  // function addCss () {
-  //   let rule = "img.redactive {filter: grayscale(100%)}"
-  //   rule += " div {background-color: red}"
-  //   let css = document.createElement('style')
-  //   css.appendChild(document.createTextNode(rule))
-  //   console.log("added css")
-  // }
 
   function disableFilter(e: Element){
     e.classList.add("skipRedactive")
@@ -71,28 +59,16 @@
       }
     }
   }
-    // const matches = document.querySelectorAll("style*=background-image") //todo this selector doesn't work
-    // for (const match of matches) {
-    //   console.log("found element with background image")
-    //   if (!match.classList.contains('skipRedact') && !match.classList.contains('redactive') ){
-    //     match.classList.add("redactive")
-    //   }
-    // }
-    
-    // const property = "background-image"
-    // let walker = document.createTreeWalker(
-    //   document.documentElement,
-    //   NodeFilter.SHOW_ELEMENT, 
-    //   node => {
-    //     const el = node as Element
-    //     const bgImgProp = getComputedStyle(el).getPropertyValue("background-image").trim()
-    //     return (bgImgProp && bgImgProp != "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
-    //   }
-    // )
-    // while ( walker.nextNode() ) {
-    //   const el = walker.currentNode as Element
-    //   if (!el.classList.contains('skipRedact') && !el.classList.contains('redactive') ){
-    //     el.classList.add("redactive")
-    //   }
-    // }
+
+  function processVideos () { 
+    console.log("Processing videos")
+    const videos = document.getElementsByTagName("video")
+    for (const video of videos) {
+      if (!video.classList.contains('skipRedact') && !video.classList.contains('redactive') ){
+        video.classList.add('redactive')
+        video.removeAttribute("autoplay")
+        video.volume = 0
+      }      
+    }
+  }
 </script>
