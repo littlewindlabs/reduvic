@@ -6,15 +6,15 @@
   processImgs()
   
   var mutationObserver = new MutationObserver(function(mutations) {
-    let shouldProcessImgs = false;
+    let shouldProcess = true;
 
-    mutations.forEach(function(mutation) {
-      if (mutation.type === 'childList' || mutation.type === 'attributes') {
-        shouldProcessImgs = true;
-      }
-    });
+    // mutations.forEach(function(mutation) {
+    //   if (mutation.type === 'childList' || mutation.type === 'attributes') {
+    //     shouldProcess = true;
+    //   }
+    // });
 
-    if (shouldProcessImgs) { 
+    if (shouldProcess) { 
       processImgs()
       processVideos()
       console.log("relevant DOM update")
@@ -78,15 +78,44 @@
     const videos = document.getElementsByTagName("video")
     for (const video of videos) {
       if (!video.classList.contains('skipRedact') && !video.classList.contains('redactive') ){
-        // let parent = video.parentNode;
-        // let wrapper = document.createElement('div');
-        // wrapper.classList.add('redactive')
-        // if (parent){
-        //   parent.replaceChild(wrapper, video)
-        //   wrapper.appendChild(video)
-        // }
+        let parent = video.parentNode;
+        let hidingwrapper = document.createElement('div');
+        hidingwrapper.style.position = video.style.position;
+        hidingwrapper.style.height = "" + video.height
+        hidingwrapper.style.width = "" + video.width
+        hidingwrapper.classList.add('redactive')
+        hidingwrapper.style.visibility = "hidden"
+
+        const container = document.createElement('div')
+
+        const button = document.createElement("button")
+        button.style.position = "absolute"
+        button.style.minWidth = "44px"
+        button.style.minHeight = "44px"
+        button.style.width = "100%"
+        button.style.height = "100%"
+        button.innerText = "Display video"
+        button.style.zIndex = '10'
+      
+        button.addEventListener("click", function () {
+          if (parent) { parent.replaceChild(video,container) }
+          this.remove()
+          hidingwrapper.remove()
+          container.remove()
+        })
+        
+        if (parent){
+          parent.replaceChild(container, video)
+          hidingwrapper.appendChild(video)
+          container.appendChild(hidingwrapper)
+          container.appendChild(button)
+        }
+        console.log("video wrapped")
+ 
         video.classList.add('redactive')
-      }
+        video.removeAttribute("autoplay")
+        video.volume = 0
+      }      
     }
   }
 </script>
