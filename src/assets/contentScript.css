@@ -1,7 +1,3 @@
-.redactive:not(.skipRedactive){
+.redactive {
     filter: grayscale(100%);
-}
-
-div {
-    font-family: 'Times New Roman', Times, serif;
 }
