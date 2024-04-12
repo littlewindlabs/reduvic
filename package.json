@@ -1,9 +1,9 @@
 {
-  "name": "vite-web-extension",
+  "name": "reduvic",
   "version": "1.0.0",
-  "displayName": "Vite Web Extension",
-  "author": "@samrum/vite-plugin-web-extension",
-  "description": "A @samrum/vite-plugin-web-extension web extension",
+  "displayName": "Reduvic",
+  "author": "@phillmp",
+  "description": "Browser extension to help manage exposure to upsetting images and videos",
   "type": "module",
   "scripts": {
     "build": "vite build",
