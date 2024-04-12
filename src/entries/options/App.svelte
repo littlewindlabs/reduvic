@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 import PageContent from "~/lib/PageContent.svelte";
 </script>
 
@@ -14,4 +14,4 @@ main {
   text-align: center;
   color: #2c3e50;
 }
-</style>
+</style> -->
