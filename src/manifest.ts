@@ -2,7 +2,7 @@ import pkg from "../package.json";
 
 const manifest = {
   action: {
-    default_popup: "src/entries/popup/index.html",
+    default_title: "Click to enable or disable Reduvic"
   },
   background: {
     service_worker: "src/entries/background/main.ts",
@@ -10,15 +10,17 @@ const manifest = {
   content_scripts: [
     {
       js: ["src/entries/contentScript/primary/main.ts"],
-      css: ["src/assets/contentScript.css"],
       matches: ["*://*/*"],
-      run_at: "document_idle",
+      run_at: "document_start",
     },
   ],
   host_permissions: ["*://*/*"],
-  options_ui: {
-    page: "src/entries/options/index.html",
-    open_in_tab: true,
+  icons: {
+    16: "icons/reduvicIcon_16.png",
+    19: "icons/reduvicIcon_19.png",
+    32: "icons/reduvicIcon_32.png",
+    48: "icons/reduvicIcon_48.png",
+    128: "icons/reduvicIcon_128.png",
   },
 };
 

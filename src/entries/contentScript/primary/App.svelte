@@ -1,26 +1,39 @@
 <script lang="ts">
   import browser from "webextension-polyfill"
 
-  console.log("Content script is now active")
+  function createRandomString(length:number=36){ //36 is the default length of a uuid
+    const letters = "abcdefghijklmnopqrstuvwxyz"
+    const numbers = "0123456789"
+    const chars = letters + numbers
+    let str = letters.charAt( Math.random() * (letters.length) )
+    for (let i = 1; i < length; i++) {
+      const index = Math.random() * (chars.length)
+      str = str + chars.charAt(index);
+    }
+    return str
+  }
 
   var mutationObserver: MutationObserver;
 
+  let randomizedClass = createRandomString()
+  const style = document.createElement("style")
+  style.textContent = `.${randomizedClass} { filter: grayscale(100%); }`
+  document.head.appendChild(style)
+
   browser.storage.local.get("enabled").then( (data)=> {
     const enabled: Boolean = data["enabled"]
-    if (enabled) { 
+    if (enabled) {
       setup()
     }
   })
 
-  chrome.storage.local.onChanged.addListener( (storageChange) => {
+  browser.storage.local.onChanged.addListener( (storageChange) => {
     const enabled = storageChange['enabled']['newValue']
     if (enabled == true) {
       setup()
-      console.log("Reduvic enabled")
     }
     else if ( enabled == false ) {
       teardown()
-      console.log("Reduvic disabled")
     }
   })
 
@@ -43,7 +56,6 @@
             if (shouldProcess) { 
               processImgs()
               processVideos()
-              console.log("observed DOM update")
             }
           }
         })
@@ -62,42 +74,33 @@
   
   async function teardown() {
     mutationObserver.disconnect()
-    const els= document.querySelectorAll(".redactive")
+    const els= document.querySelectorAll("." + randomizedClass)
     for (const el of els) {
-      el.classList.remove("redactive")
+      el.classList.remove(randomizedClass)
     }
   }
 
   function processImgs () {
-    console.log("processing images")
     const images = document.getElementsByTagName("img")
     for (const image of images){
-      console.log("found image")
-      if (!image.classList.contains('redactive') ){
-        image.classList.add("redactive")
-        image.addEventListener("mouseenter", (e)=> {image.classList.add("skipRedactive")})
-        image.addEventListener("mouseleave", (e)=> {image.classList.remove("skipRedactive")})
+      if (!image.classList.contains(randomizedClass) ){
+        image.classList.add(randomizedClass)
       }
     }
 
     const elBgImgList = document.querySelectorAll("[style*=background-image]")
     for (const elBgImg of elBgImgList) {
-      console.log("found element with background image")
-      if (!elBgImg.classList.contains('redactive') ){
-        elBgImg.classList.add("redactive")
-        elBgImg.addEventListener("mouseenter", (e)=> {elBgImg.classList.add("skipRedactive")})
-        elBgImg.addEventListener("mouseleave", (e)=> {elBgImg.classList.remove("skipRedactive")})
+      if (!elBgImg.classList.contains(randomizedClass) ){
+        elBgImg.classList.add(randomizedClass)
       }
     }
   }
 
   function processVideos () { 
-    console.log("Processing videos")
     const videos = document.getElementsByTagName("video")
     for (const video of videos) {
-      if (!video.classList.contains('redactive') ){
-        video.classList.add('redactive')
-        video.removeAttribute("autoplay")
+      if (!video.classList.contains(randomizedClass) ){
+        video.classList.add(randomizedClass)
       }      
     }
   }
