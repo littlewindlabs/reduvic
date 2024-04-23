@@ -23,6 +23,12 @@ const manifest = {
     48: "icons/reduvicIcon_48.png",
     128: "icons/reduvicIcon_128.png",
   },
+  browser_specific_settings: {
+    gecko: {
+      id: "reduvic@littlewindlabs.com",
+      strict_min_version: "109.0"
+    },
+  }
 };
 
 export function getManifest(): chrome.runtime.ManifestV3 {
