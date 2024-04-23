@@ -6,15 +6,16 @@ const manifest = {
   },
   background: {
     service_worker: "src/entries/background/main.ts",
+    scripts: [ "src/entries/background/main.ts" ],
   },
   content_scripts: [
     {
       js: ["src/entries/contentScript/primary/main.ts"],
-      matches: ["*://*/*"],
+      matches: ["<all_urls>"],
       run_at: "document_end",
     },
   ],
-  host_permissions: ["*://*/*"],
+  host_permissions: ["<all_urls>"],
   icons: {
     16: "icons/reduvicIcon_16.png",
     19: "icons/reduvicIcon_19.png",

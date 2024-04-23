@@ -1,21 +1,55 @@
 import browser from "webextension-polyfill";
 
 browser.runtime.onInstalled.addListener(() => {
+  browser.storage.local.set({"enabled":false}).then( () => { setState( false ) } );
   console.log("Extension installed");
 });
 
-browser.action.onClicked.addListener( ()=> { 
-  browser.storage.local.get(["enabled"]).then( (result) => {
-    let curState = result.enabled;
-    setState( !curState );
-  })
-});
+const allHostsPerm = {
+    "origins": ["<all_urls>"],
+  }
+
+let hasPermission = false;
+browser.permissions.contains( allHostsPerm ).then( (didSucceed) => { hasPermission = didSucceed })
+console.log("Has user granted necessary permission? " + hasPermission)
+
+browser.permissions.onRemoved.addListener( (perms)=>{
+  if (perms.origins?.includes( allHostsPerm["origins"][0]) ){
+    hasPermission = false;
+  }
+})
+
+browser.action.onClicked.addListener( ()=>{
+  if (!hasPermission){
+    browser.permissions.request( allHostsPerm ).then( (didSucceed) => { 
+      hasPermission = didSucceed
+      console.log("User granted access")
+      if (didSucceed){
+        getExtensionState().then( ( isEnabled )=>{
+          setState(!isEnabled)
+        })
+      }
+      else {
+        console.log("User denied access")
+      }
+    })
+  }
+  else { 
+    getExtensionState().then( ( isEnabled )=>{
+      setState(!isEnabled)
+    })
+  }
+})
+
+function getExtensionState() {
+  return browser.storage.local.get(["enabled"]).then((result)=>{return result.enabled})
+}
 
 function setState( isOn:Boolean) {
   let bg = "#FFFFFF";
   let badgeText = "OFF";
   let textColour = "#4F4F4F";
-  let actionTitle = "Turn on Reduvic";
+  let actionTitle = `Turn ${isOn ? "off" : "on"} Reduvic`;
   if ( isOn ) {
     bg = "#318053";
     badgeText = "ON";
@@ -28,17 +62,3 @@ function setState( isOn:Boolean) {
     browser.action.setTitle( {title: actionTitle } )
   })
 }
-// browser.tabs.onCreated.addListener( (t)=> {
-//   console.log("new tab")
-//   browser.tabs.update(t.id, {muted:true})
-// })
-
-// browser.tabs.onActivated.addListener( (ai)=> {
-//   console.log("tab switch")
-//   browser.tabs.update(ai.tabId, {muted:true})
-// })
-
-// browser.tabs.onUpdated.addListener((tid, ci, t) => {
-//   console.log("tab updated")
-//   browser.tabs.update(tid, {muted:true})
-// })

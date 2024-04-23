@@ -11,6 +11,7 @@ export default defineConfig(() => {
       svelte(),
       webExtension({
         manifest: getManifest(),
+        useDynamicUrlWebAccessibleResources: false,
       }),
     ],
     resolve: {
@@ -20,3 +21,38 @@ export default defineConfig(() => {
     },
   };
 });
+
+
+// export default defineConfig(( {command, mode} ) => {
+//   const env = loadEnv(mode, process.cwd())
+//   if (mode === "firefox") {
+//     return {
+//       plugins: [
+//         svelte(),
+//         webExtension({
+//           manifest: getManifestFirefox(),
+//         }),
+//       ],
+//       resolve: {
+//         alias: {
+//           "~": path.resolve(__dirname, "./src"),
+//         },
+//       },
+//     };
+//   }
+//   else if (mode === "chromium") {
+//     return {
+//       plugins: [
+//         svelte(),
+//         webExtension({
+//           manifest: getManifestChrome(),
+//         }),
+//       ],
+//       resolve: {
+//         alias: {
+//           "~": path.resolve(__dirname, "./src"),
+//         },
+//       },
+//     };
+//   }
+// });
