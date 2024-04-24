@@ -1,5 +1,6 @@
+![reduvicIcon_128](https://github.com/littlewindlabs/reduvic/assets/8772256/e136fda0-7afe-40e3-b51a-4e3980b68de6) 
 # Reduvic
-## Browser extension to help manage exposure to upsetting images and videos
+**Browser extension to help researchers manage exposure to upsetting images and videos**
 
 ## Summary
 The name "Reduvic" comes from its goal - "REDUce VICarious trauma". 
