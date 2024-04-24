@@ -25,7 +25,7 @@ const manifest = {
   },
   browser_specific_settings: {
     gecko: {
-      id: "reduvic@littlewindlabs.com",
+      id: "reduvic-firefox@littlewindlabs.com",
       strict_min_version: "109.0"
     },
   }
