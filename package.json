@@ -2,7 +2,7 @@
   "name": "reduvic",
   "version": "1.0.0",
   "displayName": "Reduvic",
-  "author": "Littlewind Labs",
+  "author": "reduvic@littlewindlabs.com",
   "description": "Browser extension to help manage the impact of graphic content",
   "type": "module",
   "scripts": {

@@ -5,7 +5,7 @@
     const letters = "abcdefghijklmnopqrstuvwxyz"
     const numbers = "0123456789"
     const chars = letters + numbers
-    let str = letters.charAt( Math.random() * (letters.length) )
+    let str = letters.charAt( Math.random() * (letters.length) ) //CSS selectors must start with a letter,not
     for (let i = 1; i < length; i++) {
       const index = Math.random() * (chars.length)
       str = str + chars.charAt(index);
